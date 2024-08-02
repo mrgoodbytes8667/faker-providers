@@ -27,12 +27,9 @@ $ composer require mrgoodbytes8667/faker-providers
 ## Usage
 
 ```php
-use Bytes\Common\Faker\Providers\MiscProvider;
-use Faker\Factory;
+use Bytes\Common\Faker\Factory;
 
-/** @var Factory|MiscProvider $faker */
 $faker = Factory::create();
-$faker->addProvider(new MiscProvider($faker));
 
 $faker->camelWords();
 $faker->snakeWords();
@@ -41,11 +38,21 @@ $faker->rangeBetween(4, 1, 2);
 $faker->randomAlphanumericString();
 $faker->paragraphsMinimumChars();
 ```
-Note: @var is helpful for IDE autocompletion
+
+The included replacement Factory removes the now deprecated Faker image provider and replaces it with the [mmo/faker-images](https://github.com/morawskim/faker-images) provider, and adds other included providers by default. It returns an overloaded Generator for code completion purposes as well.
 
 ### With PHPUnit
-If you are using `$faker` in every test, you can use `TestFakerTrait` to setup/teardown `$this->faker` before/after each test.
-Declare `$this->providers` as an array of additional providers beyond `MiscProvider` to auto-add them when using this trait.
+See [test-common-faker](https://github.com/mrgoodbytes8667/test-common-faker) for easy PHPUnit test integrate
+
+### With Zenstruck/Foundry
+Add the following to `Kernel.php` to replace the default Faker Generator with this one, adding in these providers
+
+```php
+    public function process(ContainerBuilder $container): void
+    {
+        $container->getDefinition('.zenstruck_foundry.faker')->setFactory([\Bytes\Common\Faker\Factory::class, 'create']);
+    }
+```
 
 ## License
 [![License](https://i.creativecommons.org/l/by-nc/4.0/88x31.png)]("http://creativecommons.org/licenses/by-nc/4.0/)  
