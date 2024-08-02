@@ -13,7 +13,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.58",
-        "mrgoodbytes8667/test-common-faker": "^0.5.1",
+        "mrgoodbytes8667/test-common-faker": "^0.6",
         "rector/rector": "^1.0",
         "symfony/test-pack": "^1.0.9"
     },
@@ -37,5 +37,6 @@
             "Bytes\\Common\\Faker\\": "src/",
             "Bytes\\Common\\Faker\\Tests\\": "Tests/"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
