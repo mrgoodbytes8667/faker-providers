@@ -2,19 +2,16 @@
 
 namespace Bytes\Common\Faker\Tests\Providers;
 
-use Bytes\Common\Faker\TestFakerTrait;
+use Bytes\Common\Faker\Factory;
+use Bytes\Common\Faker\Generator as FakerGenerator;
 use Bytes\Common\Faker\Tests\Fixtures\FixtureEnum;
 use Generator;
 use PHPUnit\Framework\TestCase;
-
 use function Symfony\Component\String\u;
 
-/**
- * Class MiscProviderTest.
- */
 class MiscProviderTest extends TestCase
 {
-    use TestFakerTrait;
+    private ?FakerGenerator $faker = null;
 
     /**
      * Test is mostly for coverage, there isn't a good way to test this function.
@@ -22,7 +19,7 @@ class MiscProviderTest extends TestCase
     public function testCamelWords()
     {
         $words = $this->faker->camelWords();
-        $this->assertEquals(u($words)->camel()->toString(), $words);
+        self::assertEquals(u($words)->camel()->toString(), $words);
     }
 
     /**
@@ -31,13 +28,13 @@ class MiscProviderTest extends TestCase
     public function testSnakeWords()
     {
         $words = $this->faker->snakeWords();
-        $this->assertEquals(u($words)->snake()->toString(), $words);
+        self::assertEquals(u($words)->snake()->toString(), $words);
     }
 
     public function testOneOrMoreOf()
     {
         $result = $this->faker->oneOrMoreOf($this->faker->words());
-        $this->assertGreaterThanOrEqual(1, count($result));
+        self::assertGreaterThanOrEqual(1, count($result));
     }
 
     /**
@@ -46,7 +43,7 @@ class MiscProviderTest extends TestCase
     public function testOneOrMoreOfMultiple($words)
     {
         $result = $this->faker->oneOrMoreOf($words);
-        $this->assertGreaterThanOrEqual(1, count($result));
+        self::assertGreaterThanOrEqual(1, count($result));
     }
 
     /**
@@ -61,17 +58,27 @@ class MiscProviderTest extends TestCase
         }
     }
 
+    /**
+     * @before
+     */
+    protected function setupFaker(): void
+    {
+        if (is_null($this->faker)) {
+            $this->faker = Factory::create();
+        }
+    }
+
     public function testRangeBetween()
     {
         $range = $this->faker->rangeBetween(4, 1, 2);
 
         $count = count($range);
-        $this->assertGreaterThanOrEqual(2, $count);
-        $this->assertLessThanOrEqual(4, $count);
+        self::assertGreaterThanOrEqual(2, $count);
+        self::assertLessThanOrEqual(4, $count);
 
         foreach ($range as $i) {
-            $this->assertGreaterThanOrEqual(1, $i);
-            $this->assertLessThanOrEqual(4, $i);
+            self::assertGreaterThanOrEqual(1, $i);
+            self::assertLessThanOrEqual(4, $i);
         }
     }
 
@@ -80,12 +87,12 @@ class MiscProviderTest extends TestCase
         $range = $this->faker->rangeBetween(4, 1, 0);
 
         $count = count($range);
-        $this->assertGreaterThanOrEqual(1, $count);
-        $this->assertLessThanOrEqual(4, $count);
+        self::assertGreaterThanOrEqual(1, $count);
+        self::assertLessThanOrEqual(4, $count);
 
         foreach ($range as $i) {
-            $this->assertGreaterThanOrEqual(1, $i);
-            $this->assertLessThanOrEqual(4, $i);
+            self::assertGreaterThanOrEqual(1, $i);
+            self::assertLessThanOrEqual(4, $i);
         }
     }
 
@@ -95,12 +102,12 @@ class MiscProviderTest extends TestCase
     public function testRangeBetween412($range)
     {
         $count = count($range);
-        $this->assertGreaterThanOrEqual(2, $count);
-        $this->assertLessThanOrEqual(4, $count);
+        self::assertGreaterThanOrEqual(2, $count);
+        self::assertLessThanOrEqual(4, $count);
 
         foreach ($range as $i) {
-            $this->assertGreaterThanOrEqual(1, $i);
-            $this->assertLessThanOrEqual(4, $i);
+            self::assertGreaterThanOrEqual(1, $i);
+            self::assertLessThanOrEqual(4, $i);
         }
     }
 
@@ -122,12 +129,12 @@ class MiscProviderTest extends TestCase
     public function testRangeBetween915($range)
     {
         $count = count($range);
-        $this->assertGreaterThanOrEqual(5, $count);
-        $this->assertLessThanOrEqual(9, $count);
+        self::assertGreaterThanOrEqual(5, $count);
+        self::assertLessThanOrEqual(9, $count);
 
         foreach ($range as $i) {
-            $this->assertGreaterThanOrEqual(1, $i);
-            $this->assertLessThanOrEqual(9, $i);
+            self::assertGreaterThanOrEqual(1, $i);
+            self::assertLessThanOrEqual(9, $i);
         }
     }
 
@@ -147,21 +154,21 @@ class MiscProviderTest extends TestCase
     {
         // Tests empty $possibilities
         $result = $this->faker->randomAlphanumericString(18);
-        $this->assertEquals(18, strlen($result));
+        self::assertEquals(18, strlen($result));
         foreach (array_merge(range(0, 47), range(58, 64), range(91, 96), range(123, 127)) as $dec) {
-            $this->assertStringNotContainsString(chr($dec), $result);
+            self::assertStringNotContainsString(chr($dec), $result);
         }
 
         // Tests string $possibilities
         $result = $this->faker->randomAlphanumericString(10, 'A');
-        $this->assertEquals(10, strlen($result));
-        $this->assertEquals('AAAAAAAAAA', $result);
+        self::assertEquals(10, strlen($result));
+        self::assertEquals('AAAAAAAAAA', $result);
 
         // Tests non-string and non-array $possibilities
         $result = $this->faker->randomAlphanumericString(12, 5);
-        $this->assertEquals(12, strlen($result));
+        self::assertEquals(12, strlen($result));
         foreach (array_merge(range(0, 47), range(58, 64), range(91, 96), range(123, 127)) as $dec) {
-            $this->assertStringNotContainsString(chr($dec), $result);
+            self::assertStringNotContainsString(chr($dec), $result);
         }
     }
 
@@ -169,7 +176,7 @@ class MiscProviderTest extends TestCase
     {
         $minChars = $this->faker->numberBetween(1000, 1500);
 
-        $this->assertGreaterThanOrEqual($minChars, strlen($this->faker->paragraphsMinimumChars($minChars)));
+        self::assertGreaterThanOrEqual($minChars, strlen($this->faker->paragraphsMinimumChars($minChars)));
     }
 
     /**
@@ -177,7 +184,7 @@ class MiscProviderTest extends TestCase
      */
     public function testParagraphsMinimumCharsMultiple($minChars, $value)
     {
-        $this->assertGreaterThanOrEqual($minChars, strlen($value));
+        self::assertGreaterThanOrEqual($minChars, strlen($value));
     }
 
     /**
@@ -210,5 +217,13 @@ class MiscProviderTest extends TestCase
 
         self::assertContains($this->faker->randomEnumValue(FixtureEnum::class), $values);
         self::assertContains($this->faker->randomEnumValue(FixtureEnum::A), $values);
+    }
+
+    /**
+     * @after
+     */
+    protected function tearDownFaker(): void
+    {
+        $this->faker = null;
     }
 }
