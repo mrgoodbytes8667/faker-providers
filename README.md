@@ -42,7 +42,7 @@ $faker->paragraphsMinimumChars();
 The included replacement Factory removes the now deprecated Faker image provider and replaces it with the [mmo/faker-images](https://github.com/morawskim/faker-images) provider, and adds other included providers by default. It returns an overloaded Generator for code completion purposes as well.
 
 ### With PHPUnit
-See [test-common-faker](https://github.com/mrgoodbytes8667/test-common-faker) for easy PHPUnit test integrate
+See [test-common-faker](https://github.com/mrgoodbytes8667/test-common-faker) for easy PHPUnit test integration
 
 ### With Zenstruck/Foundry
 Add the following to `Kernel.php` to replace the default Faker Generator with this one, adding in these providers
