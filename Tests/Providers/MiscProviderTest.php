@@ -4,6 +4,7 @@ namespace Bytes\Common\Faker\Tests\Providers;
 
 use Bytes\Common\Faker\Factory;
 use Bytes\Common\Faker\Generator as FakerGenerator;
+use Bytes\Common\Faker\Providers\MiscProvider;
 use Bytes\Common\Faker\Tests\Fixtures\FixtureEnum;
 use Generator;
 use PHPUnit\Framework\TestCase;
@@ -12,6 +13,20 @@ use function Symfony\Component\String\u;
 class MiscProviderTest extends TestCase
 {
     private ?FakerGenerator $faker = null;
+
+    public static function provideTruthyValues(): Generator
+    {
+        foreach (MiscProvider::getTruthyValues() as $case) {
+            yield [$case];
+        }
+    }
+
+    public static function provideFalsyValues(): Generator
+    {
+        foreach (MiscProvider::getFalsyValues() as $case) {
+            yield [$case];
+        }
+    }
 
     /**
      * Test is mostly for coverage, there isn't a good way to test this function.
@@ -217,6 +232,38 @@ class MiscProviderTest extends TestCase
 
         self::assertContains($this->faker->randomEnumValue(FixtureEnum::class), $values);
         self::assertContains($this->faker->randomEnumValue(FixtureEnum::A), $values);
+    }
+
+    public function testRandomTruthyValue()
+    {
+        $value = $this->faker->randomTruthyValue();
+        self::assertTrue(filter_var($value, FILTER_VALIDATE_BOOLEAN));
+    }
+
+    public function testRandomFalsyValue()
+    {
+        $value = $this->faker->randomFalsyValue();
+        self::assertFalse(filter_var($value, FILTER_VALIDATE_BOOLEAN));
+    }
+
+    /**
+     * @dataProvider provideTruthyValues
+     * @param $value
+     * @return void
+     */
+    public function testTruthyValues($value)
+    {
+        self::assertTrue(filter_var($value, FILTER_VALIDATE_BOOLEAN));
+    }
+
+    /**
+     * @dataProvider provideFalsyValues
+     * @param $value
+     * @return void
+     */
+    public function testFalsyValues($value)
+    {
+        self::assertFalse(filter_var($value, FILTER_VALIDATE_BOOLEAN));
     }
 
     /**

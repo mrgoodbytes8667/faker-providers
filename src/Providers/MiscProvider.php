@@ -128,4 +128,36 @@ class MiscProvider extends Base
     {
         return self::randomElement($class::cases())?->value;
     }
+
+    /**
+     * Returns a value that evaluates to a boolean true if passed to filter_var($value, FILTER_VALIDATE_BOOLEAN)
+     */
+    public function randomTruthyValue(): bool|string|int|null
+    {
+        return self::randomElement(self::getTruthyValues());
+    }
+
+    /**
+     * Returns a value that evaluates to a boolean false if passed to filter_var($value, FILTER_VALIDATE_BOOLEAN)
+     */
+    public function randomFalsyValue(): bool|string|int|null
+    {
+        return self::randomElement(self::getFalsyValues());
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTruthyValues(): array
+    {
+        return [true, "1", "true", "on", "yes", 1];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getFalsyValues(): array
+    {
+        return [false, "0", "false", "off", "no", 0];
+    }
 }
