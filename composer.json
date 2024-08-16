@@ -29,7 +29,8 @@
         "phpunit/phpunit": "<9.5 || 9.5.8"
     },
     "suggest": {
-        "mrgoodbytes8667/test-common-faker": "For easily adding Faker to tests"
+        "mrgoodbytes8667/test-common-faker": "For easily adding Faker to tests",
+        "zenstruck/foundry": "For creating entity factories for test/fixture purposes"
     },
     "autoload": {
         "psr-4": {
