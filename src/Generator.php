@@ -17,6 +17,8 @@ use Faker\Generator as ParentGenerator;
  * @method int|string|null      randomEnumValue(BackedEnum|string $class):
  * @method bool|string|int|null randomTruthyValue()
  * @method bool|string|int|null randomFalsyValue()
+ * @method string               hexColorNoPrefix()
+ * @method string               safeHexColorNoPrefix()
  */
 class Generator extends ParentGenerator
 {
