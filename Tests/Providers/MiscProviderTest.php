@@ -8,6 +8,7 @@ use Bytes\Common\Faker\Providers\MiscProvider;
 use Bytes\Common\Faker\Tests\Fixtures\FixtureEnum;
 use Generator;
 use PHPUnit\Framework\TestCase;
+
 use function Symfony\Component\String\u;
 
 class MiscProviderTest extends TestCase
@@ -248,7 +249,7 @@ class MiscProviderTest extends TestCase
 
     /**
      * @dataProvider provideTruthyValues
-     * @param $value
+     *
      * @return void
      */
     public function testTruthyValues($value)
@@ -258,12 +259,26 @@ class MiscProviderTest extends TestCase
 
     /**
      * @dataProvider provideFalsyValues
-     * @param $value
+     *
      * @return void
      */
     public function testFalsyValues($value)
     {
         self::assertFalse(filter_var($value, FILTER_VALIDATE_BOOLEAN));
+    }
+
+    public function testHexColorNoPrefix()
+    {
+        $value = $this->faker->hexColorNoPrefix();
+        self::assertStringNotContainsString('#', $value);
+        self::assertSame(6, strlen($value));
+    }
+
+    public function testSafeHexColorNoPrefix()
+    {
+        $value = $this->faker->safeHexColorNoPrefix();
+        self::assertStringNotContainsString('#', $value);
+        self::assertSame(6, strlen($value));
     }
 
     /**

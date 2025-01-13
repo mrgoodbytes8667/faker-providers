@@ -3,6 +3,7 @@
 namespace Bytes\Common\Faker\Providers;
 
 use BackedEnum;
+use Faker\Core\Color;
 use Faker\Provider\Base;
 
 use function Symfony\Component\String\u;
@@ -130,7 +131,7 @@ class MiscProvider extends Base
     }
 
     /**
-     * Returns a value that evaluates to a boolean true if passed to filter_var($value, FILTER_VALIDATE_BOOLEAN)
+     * Returns a value that evaluates to a boolean true if passed to filter_var($value, FILTER_VALIDATE_BOOLEAN).
      */
     public function randomTruthyValue(): bool|string|int|null
     {
@@ -138,26 +139,42 @@ class MiscProvider extends Base
     }
 
     /**
-     * Returns a value that evaluates to a boolean false if passed to filter_var($value, FILTER_VALIDATE_BOOLEAN)
+     * Returns a value that evaluates to a boolean false if passed to filter_var($value, FILTER_VALIDATE_BOOLEAN).
      */
     public function randomFalsyValue(): bool|string|int|null
     {
         return self::randomElement(self::getFalsyValues());
     }
 
-    /**
-     * @return array
-     */
     public static function getTruthyValues(): array
     {
-        return [true, "1", "true", "on", "yes", 1];
+        return [true, '1', 'true', 'on', 'yes', 1];
+    }
+
+    public static function getFalsyValues(): array
+    {
+        return [false, '0', 'false', 'off', 'no', 0];
     }
 
     /**
-     * @return array
+     * @example 'fa3cc2'
+     *
+     * @see Color::hexColor() for the original function that includes the prefix
      */
-    public static function getFalsyValues(): array
+    public static function hexColorNoPrefix(): string
     {
-        return [false, "0", "false", "off", "no", 0];
+        return str_pad(dechex(self::numberBetween(1, 16777215)), 6, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * @example 'ff0044'
+     *
+     * @see Color::safeHexColor()for the original function that includes the prefix
+     */
+    public static function safeHexColorNoPrefix(): string
+    {
+        $color = str_pad(dechex(self::numberBetween(0, 255)), 3, '0', STR_PAD_LEFT);
+
+        return $color[0].$color[0].$color[1].$color[1].$color[2].$color[2];
     }
 }
