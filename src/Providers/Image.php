@@ -35,7 +35,7 @@ class Image extends Base
         $randomize = true,
         $word = null,
         $gray = false,
-        $format = 'jpg'
+        $format = 'jpg',
     ) {
         return PicsumProvider::picsumUrl(width: $width, height: $height, randomize: $randomize, gray: $gray, imageExtension: $format);
     }
